@@ -1,7 +1,7 @@
 # 0x06. Log Parsing
 :open_file_folder: Specializations - Interview Preparation ― Algorithms  
-:bust_in_silhouette: by Alexa Orrico, Software Engineer at Holberton School  
-:copyright: **[Holberton School](https://www.holbertonschool.com/)**
+:bust_in_silhouette: by NancyIdiong, Software Engineer at ALX School 
+:copyright: **ALX School](https://www.alx.com/)**
 
 ## Requirements
 A ```README.md``` file.
@@ -10,5 +10,5 @@ A ```README.md``` file.
 * [x] 0. Log parsing
 
 ## Software engineer
-Javier Andrés Garzón Patarroyo  
-:octocat: [GitHub](https://github.com/javierandresgp/)
+Nancy Idiong  
+:octocat: [GitHub](https://github.com/nancyiddy/)

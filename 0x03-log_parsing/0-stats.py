@@ -1,45 +1,47 @@
 #!/usr/bin/python3
-"""
-Reads stdin line by line and computes metrics
-"""
+""" script that reads stdin line by line and computes metrics """
 
-from sys import stdin
+if __name__ == '__main__':
 
-if __name__ == "__main__":
-    total_size = 0
-    status_codes = {}
-    list_status_codes = [
-        "200", "301", "400", "401", "403", "404", "405", "500"]
-    for status in list_status_codes:
-        status_codes[status] = 0
-    count = 0
+    import sys
+
+    def print_results(statusCodes, fileSize):
+        """ Print statistics """
+        print("File size: {:d}".format(fileSize))
+        for statusCode, times in sorted(statusCodes.items()):
+            if times:
+                print("{:s}: {:d}".format(statusCode, times))
+
+    statusCodes = {"200": 0,
+                   "301": 0,
+                   "400": 0,
+                   "401": 0,
+                   "403": 0,
+                   "404": 0,
+                   "405": 0,
+                   "500": 0
+                   }
+    fileSize = 0
+    n_lines = 0
+
     try:
-        for line in stdin:
+        """ Read stdin line by line """
+        for line in sys.stdin:
+            if n_lines != 0 and n_lines % 10 == 0:
+                """ After every 10 lines, print from the beginning """
+                print_results(statusCodes, fileSize)
+            n_lines += 1
+            data = line.split()
             try:
-                args = line.split(" ")
-                if len(args) != 9:
-                    pass
-                if args[-2] in list_status_codes:
-                    status_codes[args[-2]] += 1
-                if args[-1][-1] == '\n':
-                    args[-1][:-1]
-                total_size += int(args[-1])
+                """ Compute metrics """
+                statusCode = data[-2]
+                if statusCode in statusCodes:
+                    statusCodes[statusCode] += 1
+                fileSize += int(data[-1])
             except:
                 pass
-            count += 1
-            if count % 10 == 0:
-                print("File size: {}".format(total_size))
-                for status in sorted(status_codes.keys()):
-                    if status_codes[status] != 0:
-                        print("{}: {}".format(
-                            status, status_codes[status]))
-        print("File size: {}".format(total_size))
-        for status in sorted(status_codes.keys()):
-            if status_codes[status] != 0:
-                print("{}: {}".format(status, status_codes[status]))
-    except KeyboardInterrupt as err:
-        print("File size: {}".format(total_size))
-        for status in sorted(status_codes.keys()):
-            if status_codes[status] != 0:
-                print("{}: {}".format(status, status_codes[status]))
+        print_results(statusCodes, fileSize)
+    except KeyboardInterrupt:
+        """ Keyboard interruption, print from the beginning """
+        print_results(statusCodes, fileSize)
         raise

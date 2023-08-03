@@ -1,8 +1,5 @@
 # 0x0C. N Queens
 :open_file_folder: Specializations - Interview Preparation ― Algorithms  
-:bust_in_silhouette: by Alexa Orrico, Software Engineer at Holberton School  
-:copyright: **[Holberton School](https://www.holbertonschool.com/)**  
-:bookmark: python | recursion
 
 ## Resources
 * [Chess grandmaster Judit Polgár](https://en.wikipedia.org/wiki/Judit_Polg%C3%A1r)
@@ -16,5 +13,5 @@
 * [ ] 0. N queens
 
 ## Software engineer
-Javier Andrés Garzón Patarroyo  
-:octocat: [GitHub](https://github.com/javierandresgp/)
+Nancy Idiong 
+:octocat: [GitHub](https://github.com/nancyiddy)

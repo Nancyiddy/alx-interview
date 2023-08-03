@@ -2,7 +2,6 @@
 :open_file_folder: Specializations - Interview Preparation ― Algorithms  
 
 ## Resources
-* [Chess grandmaster Judit Polgár](https://en.wikipedia.org/wiki/Judit_Polg%C3%A1r)
 * [Queen](https://en.wikipedia.org/wiki/Queen_%28chess%29)
 * [Backtracking](https://en.wikipedia.org/wiki/Backtracking)
 

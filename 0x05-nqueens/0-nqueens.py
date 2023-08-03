@@ -1,91 +1,113 @@
 #!/usr/bin/python3
-'''N Queens Challenge'''
+"""
+Solves the N Queens puzzle for NxN chessboard
+finds placement of N number of non-attacking queens
+"""
 
 import sys
 
 
-if __name__ == '__main__':
+def board_set_up(N):
+    """
+    Sets up blank NxN chessboard
+
+    parameters:
+        N [int]: represents the size of the board
+
+    board is initialized to 0s
+    """
+    matrix = []
+    for row in range(N):
+        matrix_row = []
+        for column in range(N):
+            matrix_row.append(0)
+        matrix.append(matrix_row)
+    return (matrix)
+
+
+def print_solution(matrix):
+    """
+    Prints the coordinates where there is a queen
+
+    parameters:
+        matrix [list of lists]: represents the NxN chessboard
+
+    queens indicated by 1 in matrix
+    coordinates printed as list of lists
+    """
+    queens_coordinates = []
+    for i, row in enumerate(matrix):
+        for j, column in enumerate(row):
+            if column == 1:
+                queen = []
+                queen.append(i)
+                queen.append(j)
+                queens_coordinates.append(queen)
+    print(queens_coordinates)
+
+
+def is_safe(matrix, new_row, new_column):
+    """
+    Determines if a queen is safe to be put in new_row, new_column
+
+    parameters:
+        matrix [list of lists]: represents the NxN chessboard
+        new_row [int]: row coordinate for potential new queen
+        new_column [int]: column coordinate for potential new queen
+    """
+    # checks row up to column (left side of row)
+    for i in range(new_column):
+        if matrix[new_row][i]:
+            return False
+    # checks upper diagonal
+    for i, j in zip(range(new_row, -1, -1),
+                    range(new_column, -1, -1)):
+        if matrix[i][j]:
+            return False
+    N = len(matrix)
+    # checks lower diagonal
+    for i, j in zip(range(new_row, N, 1),
+                    range(new_column, -1, -1)):
+        if matrix[i][j]:
+            return False
+    return True
+
+
+def solve(matrix, new_column):
+    """
+    Recursively solves the N Queens puzzle
+
+    parameters:
+        matrix [list of lists]: represents NxN chessboard
+        new_column [int]: column to test for new queen
+    """
+    N = len(matrix)
+    # base case: all queens are placed
+    if new_column >= N:
+        print_solution(matrix)
+        return matrix
+    for new_row in range(N):
+        if is_safe(matrix, new_row, new_column):
+            matrix[new_row][new_column] = 1
+            # call to recursively try to solve rest of queens
+            solve(matrix, new_column + 1)
+            # if can't solve with this position, re-set as 0
+            matrix[new_row][new_column] = 0
+    return None
+
+
+if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
-        sys.exit(1)
-
+        exit(1)
+    N = sys.argv[1]
     try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print('N must be a number')
+        N = int(N)
+    except Exception as e:
+        print("N must be a number")
         exit(1)
-
-    if n < 4:
-        print('N must be at least 4')
+    if N < 4:
+        print("N must be at least 4")
         exit(1)
-
-    solutions = []
-    placed_queens = []  # coordinates format [row, column]
-    stop = False
-    r = 0
-    c = 0
-
-    # iterate thru rows
-    while r < n:
-        goback = False
-        # iterate thru columns
-        while c < n:
-            # check is current column is safe
-            safe = True
-            for cord in placed_queens:
-                col = cord[1]
-                if(col == c or col + (r-cord[0]) == c or
-                        col - (r-cord[0]) == c):
-                    safe = False
-                    break
-
-            if not safe:
-                if c == n - 1:
-                    goback = True
-                    break
-                c += 1
-                continue
-
-            # place queen
-            cords = [r, c]
-            placed_queens.append(cords)
-            # if last row, append solution and reset all to last unfinished row
-            # and last safe column in that row
-            if r == n - 1:
-                solutions.append(placed_queens[:])
-                for cord in placed_queens:
-                    if cord[1] < n - 1:
-                        r = cord[0]
-                        c = cord[1]
-                for i in range(n - r):
-                    placed_queens.pop()
-                if r == n - 1 and c == n - 1:
-                    placed_queens = []
-                    stop = True
-                r -= 1
-                c += 1
-            else:
-                c = 0
-            break
-        if stop:
-            break
-        # on fail: go back to previous row
-        # and continue from last safe column + 1
-        if goback:
-            r -= 1
-            while r >= 0:
-                c = placed_queens[r][1] + 1
-                del placed_queens[r]  # delete previous queen coordinates
-                if c < n:
-                    break
-                r -= 1
-            if r < 0:
-                break
-            continue
-        r += 1
-
-    for idx, val in enumerate(solutions):
-        if idx == len(solutions) - 1:
-            print(val, end='')
-        else:
-            print(val)
+    matrix = board_set_up(N)
+    solve(matrix, 0)
